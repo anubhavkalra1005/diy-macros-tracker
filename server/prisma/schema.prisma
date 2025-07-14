@@ -19,3 +19,51 @@ model User {
   name  String
   email String @unique
 }
+
+model Food_UOM {
+  id Int @id @default(autoincrement())
+  name String
+  unit String @unique
+}
+
+model Macros_Chart_Master {
+  id Int @id @default(autoincrement())
+  food_name	String
+  uom_id Int
+  quantity Decimal
+  calories Decimal
+  protein Decimal
+  carbohydrates Decimal
+  fats Decimal
+}
+
+model Macros_Chart {
+  id Int @id @default(autoincrement())
+  macros_chart_master_id BigInt
+  calories Decimal
+  protein Decimal
+  carbohydrates Decimal
+  fats Decimal
+  user_id Int
+}
+
+model Macros_Tracker {
+  id Int @id @default(autoincrement())
+  macros_chart_id BigInt
+  quantity Decimal
+  calories Decimal
+  protein Decimal
+  carbohydrates Decimal
+  fats Decimal
+  user_id	Int
+  date DateTime
+}
+model Total_Macros {
+  id Int @id @default(autoincrement())
+  user_id Int
+  date DateTime
+  total_calories Decimal
+  total_protein Decimal
+  total_carbohydrates Decimal
+  total_fats Decimal
+}
