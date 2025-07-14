@@ -25,5 +25,3 @@ dist-ssr
 *.sw?
 
 diy_macros_tracker.db
-
-*.mp4
