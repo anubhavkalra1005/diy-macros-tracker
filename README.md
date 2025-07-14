@@ -1,6 +1,15 @@
+
 # 🥗 DIY Macros Tracker
 
 **DIY Macros Tracker** is a modern, full-stack web application that helps you track your daily macronutrient intake from various foods. Built with React.js, Node.js, Express, and Prisma, it offers a beautiful, intuitive interface and robust backend for seamless nutrition tracking.
+
+---
+
+## 🎬 Demo
+
+Curious how it works? Check out the video demo below:
+
+<video controls src="20250714-1218-57.4789544.mp4" title="DIY Macros Tracker Demo"></video>
 
 ---
 
@@ -122,3 +131,5 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 🙋‍♂️ Questions?
 
 Feel free to open an issue or contact the maintainer at [anubhavkalra1005](https://github.com/anubhavkalra1005).
+
+
