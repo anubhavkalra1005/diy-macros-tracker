@@ -5,14 +5,6 @@
 
 ---
 
-## 🎬 Demo
-
-Curious how it works? Check out the video demo below:
-
-<video controls src="20250714-1218-57.4789544.mp4" title="DIY Macros Tracker Demo"></video>
-
----
-
 ## 🚀 Features
 
 - 📊 **Macros Chart:** View, add, and edit food items with their macros in a dynamic table.
