@@ -42,6 +42,15 @@ export default function AddFoodForm({ data }) {
         }
     };
 
+    const handleFoodSelection = (e) => {
+        const selectedFood = data.find(item => item.id === parseInt(e.target.value));
+        setForm({
+            ...form,
+            name: e.target.value,
+            unit: selectedFood?.FoodUOM.unit || '',
+        });
+    };
+
     const handleFormChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -86,7 +95,7 @@ export default function AddFoodForm({ data }) {
                         name="food_name"
                         id="food_name"
                         value={form.name}
-                        onChange={handleFormChange}
+                        onChange={handleFoodSelection}
                         style={inputStyle}
                         required>
                         <option value="">Select Food</option>

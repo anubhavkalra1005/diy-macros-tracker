@@ -1,5 +1,6 @@
 import AddFoodForm from "./AddFoodForm";
 import { useEffect, useState } from "react";
+import FoodItems from "./FoodItems";
 
 export default function MacrosTracker() {
 
@@ -27,6 +28,8 @@ export default function MacrosTracker() {
                 <h2 style={{ textAlign: 'center', color: '#3a86ff', marginBottom: '1.5rem' }}>Macros Tracker</h2>
                 {/* Add Food Form */}
                 <AddFoodForm data={data} />
+                {/* Food Items Table */}
+                {/* <FoodItems /> */}
             </div>
         </>
     );
