@@ -29,7 +29,7 @@ function floatingLabelStyle(value) {
 export default function EditMacrosModal({ data, setData, setShowModal, editRow, setEditRow, editValues, setEditValues }) {
 
     const handleModalChange = (e) => {
-        setEditValues({ ...editValues, [e.target.name]: e.target.value });
+        setEditValues({ ...editValues, [e.target.name]: parseFloat(e.target.value) });
     };
 
     const handleModalSave = () => {
@@ -37,21 +37,40 @@ export default function EditMacrosModal({ data, setData, setShowModal, editRow, 
             row.id === editRow ? {
                 ...row,
                 ...editValues,
-                calories: Number(editValues.calories),
-                protein: Number(editValues.protein),
-                carbs: Number(editValues.carbs),
-                fats: Number(editValues.fats)
+                calories: parseFloat(editValues.calories),
+                protein: parseFloat(editValues.protein),
+                carbohydrates: parseFloat(editValues.carbohydrates),
+                fats: parseFloat(editValues.fats)
             } : row));
+
+        fetch(`/api/update-macros-chart-master/${editRow}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editValues),
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update food item');
+            }
+            return response.json();
+        }).then(data => {
+            console.log('Food item updated successfully:', data);
+            // Update the local state with the new values
+            // setData(data.map(item => item.id === row.id ? { ...item, ...editValues } : item));
+        }).catch(error => {
+            console.error('Error updating food item:', error);
+        });
 
         setShowModal(false);
         setEditRow(null);
-        setEditValues({ calories: '', protein: '', carbs: '', fats: '' });
+        setEditValues({ calories: '', protein: '', carbohydrates: '', fats: '' });
     };
 
     const handleModalClose = () => {
         setShowModal(false);
         setEditRow(null);
-        setEditValues({ calories: '', protein: '', carbs: '', fats: '' });
+        setEditValues({ calories: '', protein: '', carbohydrates: '', fats: '' });
     };
 
     return (
@@ -91,15 +110,15 @@ export default function EditMacrosModal({ data, setData, setShowModal, editRow, 
                         </div>
                         <div style={{ position: 'relative' }}>
                             <input
-                                name="carbs"
+                                name="carbohydrates"
                                 type="number"
-                                id="modal-carbs"
-                                value={editValues.carbs}
+                                id="modal-carbohydrates"
+                                value={editValues.carbohydrates}
                                 onChange={handleModalChange}
                                 style={{ ...inputStyle, paddingTop: '1.3rem' }}
                                 autoComplete="off"
                             />
-                            <label htmlFor="modal-carbs" style={floatingLabelStyle(editValues.carbs)}>Carbohydrates</label>
+                            <label htmlFor="modal-carbohydrates" style={floatingLabelStyle(editValues.carbohydrates)}>Carbohydrates</label>
                         </div>
                         <div style={{ position: 'relative' }}>
                             <input

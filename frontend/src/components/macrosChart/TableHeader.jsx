@@ -10,7 +10,7 @@ export default function TableHeader() {
                     <th style={{ padding: 12 }}>Protein (g)</th>
                     <th style={{ padding: 12 }}>Carbohydrates (g)</th>
                     <th style={{ padding: 12 }}>Fats (g)</th>
-                    <th style={{ padding: 12 }}>Edit</th>
+                    <th style={{ padding: 12 }}>Actions</th>
                 </tr>
             </thead>
         </>

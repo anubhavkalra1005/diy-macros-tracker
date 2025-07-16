@@ -30,7 +30,7 @@ const buttonStyle = {
 
 export default function AddFoodForm(props) {
 
-    const [form, setForm] = useState({ name: '', unit: '', qty: '', calories: '', protein: '', carbs: '', fats: '' });
+    const [form, setForm] = useState({ name: '', unit: '', quantity: '', calories: '', protein: '', carbohydrates: '', fats: '' });
     const [foodUOMs, setFoodUOMs] = useState([]);
 
     const validateInput = (e) => {
@@ -49,33 +49,32 @@ export default function AddFoodForm(props) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        if (!form.name || !form.unit || !form.qty) return;
+        if (!form.name || !form.unit || !form.quantity) return;
         const data = props.data || [];
-        const maxId = data.length > 0 ? Math.max(...data.map(item => item.id)) : 0; // Get the maximum ID from existing data
         const newFood = {
-            id: maxId + 1, // Increment the maximum ID for the new food item
-            name: form.name,
-            unit: form.unit,
-            qty: parseFloat(form.qty),
+            food_name: form.name,
+            uom_id: parseInt(form.unit),
+            quantity: parseFloat(form.quantity),
             calories: parseFloat(form.calories) || 0,
             protein: parseFloat(form.protein) || 0,
-            carbs: parseFloat(form.carbs) || 0,
-            fats: parseFloat(form.fats) || 0
+            carbohydrates: parseFloat(form.carbohydrates) || 0,
+            fats: parseFloat(form.fats) || 0,
+            Food_UOM: foodUOMs.find(uom => uom.id === parseInt(form.unit)) || { unit: 'N/A' }
         };
         props.func(newFood); // Call the parent function to add food
         // Reset the form
-        setForm({ name: '', unit: '', qty: '', calories: '', protein: '', carbs: '', fats: '' });
+        setForm({ name: '', unit: '', quantity: '', calories: '', protein: '', carbohydrates: '', fats: '' });
     };
 
     useEffect(() => {
         const fetchFoodUOMs = async () => {
             try {
 
-                const response = await fetch('http://localhost:5000/api/get-uoms');
+                const response = await fetch('/api/get-uoms');
                 if (!response.ok) throw new Error('Failed to fetch food UOMs');
                 const foodUOMs = await response.json();
                 console.log('Fetched Food UOMs:', foodUOMs);
-                setFoodUOMs(foodUOMs.map(uom => ({ unit: uom.unit })));
+                setFoodUOMs(foodUOMs.map(uom => ({ id: uom.id, unit: uom.unit })));
             } catch (error) {
                 console.error('Error fetching food UOMs:', error);
             }
@@ -107,15 +106,18 @@ export default function AddFoodForm(props) {
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Unit</label>
                     <select
                         name="unit"
+                        id="unit"
                         value={form.unit}
                         onChange={handleFormChange}
                         style={inputStyle}
                         required
                     >
+                        <option value="">Select Unit</option>
                         {foodUOMs.map((uom, index) => (
                             <option
                                 key={index}
-                                value={uom.unit}
+                                value={uom.id}
+                                data-unit={uom.unit}
                                 style={{
                                     background: index % 2 === 0 ? '#f8fafc' : '#e0e7ff',
                                     color: '#3a86ff',
@@ -133,7 +135,7 @@ export default function AddFoodForm(props) {
                 </div>
                 <div style={{ flex: 1, minWidth: 70, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Qty</label>
-                    <input name="qty" value={form.qty} onChange={handleFormChange} onBlur={validateInput} placeholder="Qty" type="number" required style={inputStyle} />
+                    <input name="quantity" value={form.quantity} onChange={handleFormChange} onBlur={validateInput} placeholder="Qty" type="number" required style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 90, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Calories</label>
@@ -145,7 +147,7 @@ export default function AddFoodForm(props) {
                 </div>
                 <div style={{ flex: 1, minWidth: 110, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Carbohydrates</label>
-                    <input name="carbs" value={form.carbs} onChange={handleFormChange} onBlur={validateInput} placeholder="Carbohydrates" type="number" style={inputStyle} />
+                    <input name="carbohydrates" value={form.carbohydrates} onChange={handleFormChange} onBlur={validateInput} placeholder="Carbohydrates" type="number" style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 90, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Fats</label>

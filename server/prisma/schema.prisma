@@ -18,15 +18,18 @@ model User {
   id    Int    @id @default(autoincrement())
   name  String
   email String @unique
+  customMacrosChart MacrosChartMaster[] // User's personalized macros chart
 }
 
-model Food_UOM {
+model FoodUOM {
   id Int @id @default(autoincrement())
   name String
   unit String @unique
+
+  MacrosChartMaster MacrosChartMaster[]
 }
 
-model Macros_Chart_Master {
+model MacrosChartMaster {
   id Int @id @default(autoincrement())
   food_name	String
   uom_id Int
@@ -35,21 +38,23 @@ model Macros_Chart_Master {
   protein Decimal
   carbohydrates Decimal
   fats Decimal
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  
+  // Either null (for system chart) or associated with user
+  user_id Int?
+  user User? @relation(fields: [user_id], references: [id])
+
+  FoodUOM FoodUOM @relation(fields: [uom_id], references: [id])
+
+  MacrosTracker MacrosTracker[]
+
+  @@index([user_id])
 }
 
-model Macros_Chart {
+model MacrosTracker {
   id Int @id @default(autoincrement())
-  macros_chart_master_id BigInt
-  calories Decimal
-  protein Decimal
-  carbohydrates Decimal
-  fats Decimal
-  user_id Int
-}
-
-model Macros_Tracker {
-  id Int @id @default(autoincrement())
-  macros_chart_id BigInt
+  food_macros_id Int // PK of MacrosChartMaster acting as FK
   quantity Decimal
   calories Decimal
   protein Decimal
@@ -57,7 +62,12 @@ model Macros_Tracker {
   fats Decimal
   user_id	Int
   date DateTime
+
+  // Relation with MacrosChartMaster based on its PK
+  MacrosChartMaster MacrosChartMaster @relation(fields: [food_macros_id], references: id)
+
 }
+
 model Total_Macros {
   id Int @id @default(autoincrement())
   user_id Int

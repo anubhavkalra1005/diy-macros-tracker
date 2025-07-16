@@ -9,7 +9,7 @@
 
 - 📊 **Macros Chart:** View, add, and edit food items with their macros in a dynamic table.
 - 📝 **Add/Edit Foods:** Beautiful forms and modals for adding or editing food items, with floating labels and validation.
-- 🧮 **Automatic Calculations:** Track calories, protein, carbs, and fats for each food and in total.
+- 🧮 **Automatic Calculations:** Track calories, protein, carbohydrates, and fats for each food and in total.
 - 🏷️ **Custom Units:** Manage food units (g, ml, etc.) with a backend-powered dropdown.
 - 👤 **User Management:** Add and manage users (for multi-user support).
 - 🌈 **Modern UI:** Responsive, gradient backgrounds, sticky header, and visually appealing design.

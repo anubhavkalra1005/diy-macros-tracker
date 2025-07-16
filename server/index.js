@@ -29,7 +29,7 @@ app.post('/api/users', async (req, res) => {
 
 app.get('/api/get-uoms', async (req, res) => {
   try {
-    const foodUOMs = await prisma.food_UOM.findMany();
+    const foodUOMs = await prisma.foodUOM.findMany();
     res.json(foodUOMs);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch food UOMs' });
@@ -39,7 +39,7 @@ app.get('/api/get-uoms', async (req, res) => {
 app.post('/api/add-food-uom', async (req, res) => {
   const { name, unit } = req.body;
   try {
-    const foodUOM = await prisma.food_UOM.create({ data: { name, unit } });
+    const foodUOM = await prisma.foodUOM.create({ data: { name, unit } });
     res.json(foodUOM);
   } catch (error) {
     res.status(400).json({ error: 'Failed to add food UOM' });
@@ -50,7 +50,7 @@ app.post('/api/add-food-uoms', async (req, res) => {
   const foodUOMs = req.body; // Expecting an array of food UOMs
   console.log('Received food UOMs:', foodUOMs.uoms);
   try {
-    const createdUOMs = await prisma.food_UOM.createMany({
+    const createdUOMs = await prisma.foodUOM.createMany({
       data: foodUOMs.uoms
     });
     res.json(createdUOMs);
@@ -62,9 +62,23 @@ app.post('/api/add-food-uoms', async (req, res) => {
 
 app.post('/api/macros-chart-master', async (req, res) => {
   const macrosChartReq = req.body;
-  console.log('Received food items:', foodItems);
+  console.log('Received food items:', macrosChartReq);
   try {
-    const createdFoodItems = await prisma.macros_chart_master.createMany({
+    const createdFoodItems = await prisma.macrosChartMaster.create({
+      data: macrosChartReq
+    });
+    res.json(createdFoodItems);
+  } catch (error) {
+    console.error('Error adding food items:', error);
+    res.status(400).json({ error: 'Failed to add food items' });
+  }
+});
+
+app.post('/api/create-bulk-macros-chart-master', async (req, res) => {
+  const macrosChartReq = req.body;
+  console.log('Received food items:', macrosChartReq);
+  try {
+    const createdFoodItems = await prisma.macrosChartMaster.createMany({
       data: macrosChartReq.foodItems
     });
     res.json(createdFoodItems);
@@ -74,15 +88,17 @@ app.post('/api/macros-chart-master', async (req, res) => {
   }
 });
 
-app.patch('/api/update-macros-chart-master', async (req, res) => {
-  const { id, data } = req.body;
+app.patch('/api/update-macros-chart-master/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  console.log('Updating food item with ID:', id);
+  const data = req.body;
   try {
-    const updatedFoodItem = await prisma.macros_chart_master.update({
+    const updatedFoodItem = await prisma.macrosChartMaster.update({
       where: { id },
       data: {
         calories: data.calories,
         protein: data.protein,
-        carbs: data.carbs,
+        carbohydrates: data.carbohydrates,
         fats: data.fats
       }
     });
@@ -93,40 +109,30 @@ app.patch('/api/update-macros-chart-master', async (req, res) => {
   }
 });
 
-app.post('/api/get-macros-chart-master', async (req, res) => {
+app.delete('/api/delete-macros-chart-master/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
   try {
-    const foodItems = await prisma.macros_chart_master.findMany();
+    await prisma.macrosChartMaster.delete({
+      where: { id }
+    });
+    res.status(204).send(); // No content
+  } catch (error) {
+    console.error('Error deleting food item:', error);
+    res.status(400).json({ error: 'Failed to delete food item' });
+  }
+});
+
+app.get('/api/get-macros-chart-master', async (req, res) => {
+  try {
+    const foodItems = await prisma.macrosChartMaster.findMany({
+      include: {
+        FoodUOM: { select: { unit: true } }
+      }
+    });
     res.json(foodItems);
   } catch (error) {
     console.error('Error fetching food items:', error);
     res.status(500).json({ error: 'Failed to fetch food items' });
-  }
-});
-
-app.post('/api/user-specific-macros-chart', async (req, res) => {
-  const requestPayload = req.body;
-  try {
-    const userSpecificMacros = await prisma.macros_chart.createMany({
-      data: requestPayload.data
-    });
-    res.json(userSpecificMacros);
-  } catch (error) {
-    console.error('Error adding user-specific macros chart:', error);
-    res.status(400).json({ error: 'Failed to add user-specific macros chart' });
-  }
-  
-});
-
-app.get('/api/user-specific-macros-chart/:userId', async (req, res) => {
-  const userId = parseInt(req.params.userId, 10);
-  try {
-    const userMacrosChart = await prisma.macros_chart.findMany({
-      where: { userId }
-    });
-    res.json(userMacrosChart);
-  } catch (error) {
-    console.error('Error fetching user-specific macros chart:', error);
-    res.status(500).json({ error: 'Failed to fetch user-specific macros chart' });
   }
 });
 
