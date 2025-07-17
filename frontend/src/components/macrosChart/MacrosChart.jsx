@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import AddFoodForm from './AddFoodForm';
+import { useEffect, useState } from 'react';
 import FoodItems from './FoodItems';
+import AddMacrosForm from './AddMacrosForm';
 
 export default function MacrosChart() {
     const [data, setData] = useState([]);
-    const [counter, setCounter] = useState(0);
+    // const [counter, setCounter] = useState(0);
 
-    const addFood = (newFood) => {
-        setData([...data, newFood]);
-        var requestBody = {...newFood};
-        delete requestBody.Food_UOM;
-        // Send the new food item to the server
-        fetch('/api/macros-chart-master', {
+    const addMacros = (newItem) => {
+        var requestBody = { ...newItem };
+        delete requestBody.FoodUOM;
+        fetch('/api/macros-chart', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,40 +20,53 @@ export default function MacrosChart() {
                 throw new Error('Failed to add food item');
             }
             return response.json();
-        }).then(data => {
-            console.log('Food item added successfully:', data);
-            setCounter(counter + 1);
+        }).then(apiData => {
+            console.log('Food item added successfully:', apiData);
+            setData([...data, { ...newItem, id: apiData.id }]);
         }).catch(error => {
             console.error('Error adding food item:', error);
         });
+    };
 
-        // Log the new food item to the console
-        console.log('New Food Item:', newFood);
+    const updateMacros = async (id, updatedItem) => {
+        const res = await fetch(`/api/macros-chart/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedItem),
+        });
+        const savedItem = await res.json();
+
+        setData(prev =>
+            prev.map(item => (item.id === id ? savedItem : item))
+        );
+        // setCounter(counter + 1);
+        console.log('Macros updated successfully:', savedItem);
+    };
+
+    const deleteMacros = async (id) => {
+        const res = await fetch(`/api/macros-chart/${id}`, {
+            method: 'DELETE',
+        });
+        const deletedItem = await res.json();
+        setData(prev => prev.filter(item => item.id !== id));
     };
 
     useEffect(() => {
-        const fetchFoodItems = async () => {
-            try {
-                const response = await fetch('/api/get-macros-chart-master');
-                if (!response.ok) throw new Error('Failed to fetch food items');
-                const foodItems = await response.json();
-                console.log('Fetched Food Items:', foodItems);
-                setData(foodItems);
-            } catch (error) {
-                console.error('Error fetching food items:', error);
-            }
-        };
-
-        fetchFoodItems();
-    }, [counter]);
+        fetch('/api/macros-chart')
+            .then(response => response.json())
+            .then(macrosMasterData => {
+                console.log('Fetched Macros:', macrosMasterData);
+                setData(macrosMasterData);
+            });
+    }, []);
 
     return (
         <div className="macros-chart-container" style={{ maxWidth: 900, margin: '2rem auto', padding: '1rem' }}>
             <h2 style={{ textAlign: 'center', color: '#3a86ff', marginBottom: '1.5rem' }}>Macros Chart</h2>
             {/* Add Food Form */}
-            <AddFoodForm func={addFood} data={data} />
+            <AddMacrosForm onAddMacros={addMacros} />
             {/* Food Items Table */}
-            <FoodItems data={data} setData={setData} prevCounter={counter} setCounter={setCounter} />
+            <FoodItems macrosData={data} onUpdateMacros={updateMacros} onDeleteMacros={deleteMacros} />
         </div>
     );
 }

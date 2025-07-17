@@ -42,7 +42,7 @@ export default function EditMacrosModal({ data, setData, setShowModal, editRow, 
                 quantity: parseFloat(editValues.carbohydrates),
             } : row));
 
-        // fetch(`/api/update-macros-chart-master/${editRow}`, {
+        // fetch(`/api/macros-chart/${editRow}`, {
         //     method: 'PATCH',
         //     headers: {
         //         'Content-Type': 'application/json',

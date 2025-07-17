@@ -9,7 +9,7 @@ export default function MacrosTracker() {
     useEffect(() => {
         const fetchFoodItems = async () => {
             try {
-                const response = await fetch('/api/get-macros-chart-master');
+                const response = await fetch('/api/macros-chart');
                 if (!response.ok) throw new Error('Failed to fetch food items');
                 const foodItems = await response.json();
                 console.log('Fetched Food Items:', foodItems);

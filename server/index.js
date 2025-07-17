@@ -10,13 +10,17 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-// GET all users
+// =============================
+// 👤 USER ROUTES
+// =============================
+
+// 📥 GET all users
 app.get('/api/users', async (req, res) => {
   const users = await prisma.user.findMany();
   res.json(users);
 });
 
-// POST a new user
+// ➕ POST a new user
 app.post('/api/users', async (req, res) => {
   const { name, email } = req.body;
   try {
@@ -27,7 +31,13 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
-app.get('/api/get-uoms', async (req, res) => {
+
+// =============================
+// ⚖️ UNIT OF MEASUREMENT (UOM) ROUTES
+// =============================
+
+// 📥 GET all UOMs
+app.get('/api/uoms', async (req, res) => {
   try {
     const foodUOMs = await prisma.foodUOM.findMany();
     res.json(foodUOMs);
@@ -36,7 +46,8 @@ app.get('/api/get-uoms', async (req, res) => {
   }
 });
 
-app.post('/api/add-food-uom', async (req, res) => {
+// ➕ POST a single UOM
+app.post('/api/uoms', async (req, res) => {
   const { name, unit } = req.body;
   try {
     const foodUOM = await prisma.foodUOM.create({ data: { name, unit } });
@@ -46,8 +57,9 @@ app.post('/api/add-food-uom', async (req, res) => {
   }
 });
 
-app.post('/api/add-food-uoms', async (req, res) => {
-  const foodUOMs = req.body; // Expecting an array of food UOMs
+// 📦 POST multiple UOMs (bulk insert)
+app.post('/api/uoms/bulk', async (req, res) => {
+  const foodUOMs = req.body; // Expecting: { uoms: [ ... ] }
   console.log('Received food UOMs:', foodUOMs.uoms);
   try {
     const createdUOMs = await prisma.foodUOM.createMany({
@@ -60,12 +72,21 @@ app.post('/api/add-food-uoms', async (req, res) => {
   }
 });
 
-app.post('/api/macros-chart-master', async (req, res) => {
+
+// =============================
+// 🍱 MACROS CHART ROUTES
+// =============================
+
+// ➕ POST a single macros chart item
+app.post('/api/macros-chart', async (req, res) => {
   const macrosChartReq = req.body;
   console.log('Received food items:', macrosChartReq);
   try {
     const createdFoodItems = await prisma.macrosChartMaster.create({
-      data: macrosChartReq
+      data: macrosChartReq,
+      include: {
+        FoodUOM: { select: { unit: true } } // Join with UOM unit
+      }
     });
     res.json(createdFoodItems);
   } catch (error) {
@@ -74,7 +95,8 @@ app.post('/api/macros-chart-master', async (req, res) => {
   }
 });
 
-app.post('/api/create-bulk-macros-chart-master', async (req, res) => {
+// 📦 POST multiple macros chart items (bulk insert)
+app.post('/api/macros-chart/bulk', async (req, res) => {
   const macrosChartReq = req.body;
   console.log('Received food items:', macrosChartReq);
   try {
@@ -88,7 +110,8 @@ app.post('/api/create-bulk-macros-chart-master', async (req, res) => {
   }
 });
 
-app.patch('/api/update-macros-chart-master/:id', async (req, res) => {
+// ✏️ PATCH (update) a specific macros chart item by ID
+app.patch('/api/macros-chart/:id', async (req, res) => {
   const id = parseInt(req.params.id, 10);
   console.log('Updating food item with ID:', id);
   const data = req.body;
@@ -100,8 +123,12 @@ app.patch('/api/update-macros-chart-master/:id', async (req, res) => {
         protein: data.protein,
         carbohydrates: data.carbohydrates,
         fats: data.fats
+      },
+      include: {
+        FoodUOM: { select: { unit: true } } // Return updated item with UOM
       }
     });
+    console.log('Updated food item:', updatedFoodItem);
     res.json(updatedFoodItem);
   } catch (error) {
     console.error('Error updating food item:', error);
@@ -109,24 +136,26 @@ app.patch('/api/update-macros-chart-master/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/delete-macros-chart-master/:id', async (req, res) => {
+// ❌ DELETE a specific macros chart item by ID
+app.delete('/api/macros-chart/:id', async (req, res) => {
   const id = parseInt(req.params.id, 10);
   try {
     await prisma.macrosChartMaster.delete({
       where: { id }
     });
-    res.status(204).send(); // No content
+    res.json({ message: 'Item Deleted Successfully' });
   } catch (error) {
     console.error('Error deleting food item:', error);
     res.status(400).json({ error: 'Failed to delete food item' });
   }
 });
 
-app.get('/api/get-macros-chart-master', async (req, res) => {
+// 📥 GET all macros chart items
+app.get('/api/macros-chart', async (req, res) => {
   try {
     const foodItems = await prisma.macrosChartMaster.findMany({
       include: {
-        FoodUOM: { select: { unit: true } }
+        FoodUOM: { select: { unit: true } } // Include UOM unit in response
       }
     });
     res.json(foodItems);

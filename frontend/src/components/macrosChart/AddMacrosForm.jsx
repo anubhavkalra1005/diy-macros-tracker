@@ -28,7 +28,7 @@ const buttonStyle = {
     alignSelf: 'flex-end',
 };
 
-export default function AddFoodForm(props) {
+export default function AddMacrosForm({ onAddMacros }) {
 
     const [form, setForm] = useState({ name: '', unit: '', quantity: '', calories: '', protein: '', carbohydrates: '', fats: '' });
     const [foodUOMs, setFoodUOMs] = useState([]);
@@ -43,14 +43,13 @@ export default function AddFoodForm(props) {
         }
     };
 
-    const handleFormChange = (e) => {
+    const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (!form.name || !form.unit || !form.quantity) return;
-        const data = props.data || [];
         const newFood = {
             food_name: form.name,
             uom_id: parseInt(form.unit),
@@ -59,28 +58,20 @@ export default function AddFoodForm(props) {
             protein: parseFloat(form.protein) || 0,
             carbohydrates: parseFloat(form.carbohydrates) || 0,
             fats: parseFloat(form.fats) || 0,
-            Food_UOM: foodUOMs.find(uom => uom.id === parseInt(form.unit)) || { unit: 'N/A' }
+            FoodUOM: foodUOMs.find(uom => uom.id === parseInt(form.unit)) || { unit: 'N/A' }
         };
-        props.func(newFood); // Call the parent function to add food
+        onAddMacros(newFood);
         // Reset the form
         setForm({ name: '', unit: '', quantity: '', calories: '', protein: '', carbohydrates: '', fats: '' });
     };
 
     useEffect(() => {
-        const fetchFoodUOMs = async () => {
-            try {
-
-                const response = await fetch('/api/get-uoms');
-                if (!response.ok) throw new Error('Failed to fetch food UOMs');
-                const foodUOMs = await response.json();
-                console.log('Fetched Food UOMs:', foodUOMs);
-                setFoodUOMs(foodUOMs.map(uom => ({ id: uom.id, unit: uom.unit })));
-            } catch (error) {
-                console.error('Error fetching food UOMs:', error);
-            }
-        };
-
-        fetchFoodUOMs();
+        fetch('/api/uoms')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched Food UOMs:', data);
+                setFoodUOMs(data.map(uom => ({ id: uom.id, unit: uom.unit })));
+            });
     }, []);
 
     return (
@@ -100,7 +91,7 @@ export default function AddFoodForm(props) {
                 }}>
                 <div style={{ flex: 2, minWidth: 140, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Food Name</label>
-                    <input name="name" value={form.name} onChange={handleFormChange} placeholder="e.g. Chicken Breast" required style={inputStyle} />
+                    <input name="name" value={form.name} onChange={handleChange} placeholder="e.g. Oats" required style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 90, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Unit</label>
@@ -108,7 +99,7 @@ export default function AddFoodForm(props) {
                         name="unit"
                         id="unit"
                         value={form.unit}
-                        onChange={handleFormChange}
+                        onChange={handleChange}
                         style={inputStyle}
                         required
                     >
@@ -131,27 +122,26 @@ export default function AddFoodForm(props) {
                             </option>
                         ))}
                     </select>
-                    {/* <input name="unit" value={form.unit} onChange={handleFormChange} placeholder="g, ml, etc." required style={inputStyle} /> */}
                 </div>
                 <div style={{ flex: 1, minWidth: 70, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Qty</label>
-                    <input name="quantity" value={form.quantity} onChange={handleFormChange} onBlur={validateInput} placeholder="Qty" type="number" required style={inputStyle} />
+                    <input name="quantity" value={form.quantity} onChange={handleChange} onBlur={validateInput} placeholder="Qty" type="number" required style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 90, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Calories</label>
-                    <input name="calories" value={form.calories} onChange={handleFormChange} onBlur={validateInput} placeholder="Calories" type="number" style={inputStyle} />
+                    <input name="calories" value={form.calories} onChange={handleChange} onBlur={validateInput} placeholder="Calories" type="number" style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 90, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Protein</label>
-                    <input name="protein" value={form.protein} onChange={handleFormChange} onBlur={validateInput} placeholder="Protein" type="number" style={inputStyle} />
+                    <input name="protein" value={form.protein} onChange={handleChange} onBlur={validateInput} placeholder="Protein" type="number" style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 110, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Carbohydrates</label>
-                    <input name="carbohydrates" value={form.carbohydrates} onChange={handleFormChange} onBlur={validateInput} placeholder="Carbohydrates" type="number" style={inputStyle} />
+                    <input name="carbohydrates" value={form.carbohydrates} onChange={handleChange} onBlur={validateInput} placeholder="Carbohydrates" type="number" style={inputStyle} />
                 </div>
                 <div style={{ flex: 1, minWidth: 90, display: 'flex', flexDirection: 'column' }}>
                     <label style={{ color: '#3a86ff', fontWeight: 500, marginBottom: 4 }}>Fats</label>
-                    <input name="fats" value={form.fats} onChange={handleFormChange} onBlur={validateInput} placeholder="Fats" type="number" style={inputStyle} />
+                    <input name="fats" value={form.fats} onChange={handleChange} onBlur={validateInput} placeholder="Fats" type="number" style={inputStyle} />
                 </div>
                 <button type="submit" style={buttonStyle}>Add Food</button>
             </form>
