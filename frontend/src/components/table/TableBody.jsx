@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-export default function TableBody({ macrosData, handleEditClick, handleDeleteClick }) {
+export default function TableBody({ data, handleEditClick, handleDeleteClick }) {
     return (
         <tbody>
-            {macrosData.map((row, index) => (
+            {data.map((row, index) => (
                 <tr key={index}>
                     <td style={{ padding: 10 }}>{row.food_name}</td>
                     <td style={{ padding: 10 }}>{row.FoodUOM.unit}</td>

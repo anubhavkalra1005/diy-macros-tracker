@@ -1,6 +1,6 @@
 import { useState } from "react";
-import TableBody from "./TableBody";
-import TableHeader from "./TableHeader";
+import TableBody from "../table/TableBody";
+import TableHeader from "../table/TableHeader";
 import EditMacrosModal from "./EditMacrosModal";
 
 export default function FoodItems({ macrosData, onUpdateMacros, onDeleteMacros }) {
@@ -33,7 +33,11 @@ export default function FoodItems({ macrosData, onUpdateMacros, onDeleteMacros }
                             </tr>
                         </tbody>
                     )}
-                    <TableBody macrosData={macrosData} handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
+                    <TableBody
+                        data={macrosData}
+                        handleEditClick={handleEditClick}
+                        handleDeleteClick={handleDeleteClick}
+                    />
                 </table>
             </div>
 
