@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { calculateMacros } from "../../utils.js";
+import Calendar from "./Calendar";
 
 // Input style for beautified fields
 const inputStyle = {
@@ -28,9 +30,10 @@ const buttonStyle = {
     alignSelf: 'flex-end',
 };
 
-export default function AddFoodForm({ data }) {
+export default function AddFoodForm({ macrosData, onAddFood, onDateUpdate }) {
 
     const [form, setForm] = useState({ name: '', unit: '', quantity: '' });
+    const [selectedFood, setSelectedFood] = useState(null);
 
     const validateInput = (e) => {
         const value = e.target.value;
@@ -43,7 +46,8 @@ export default function AddFoodForm({ data }) {
     };
 
     const handleFoodSelection = (e) => {
-        const selectedFood = data.find(item => item.id === parseInt(e.target.value));
+        const selectedFood = macrosData.find(item => item.id === parseInt(e.target.value));
+        setSelectedFood(selectedFood);
         setForm({
             ...form,
             name: e.target.value,
@@ -58,20 +62,17 @@ export default function AddFoodForm({ data }) {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (!form.name || !form.unit || !form.quantity) return;
-        const data = props.data || [];
-        const newFood = {
-            food_name: form.name,
-            uom_id: parseInt(form.unit),
+        var newFood = {
+            food_name: selectedFood.food_name,
+            food_macros_id: selectedFood.id,
             quantity: parseFloat(form.quantity),
-            calories: parseFloat(form.calories) || 0,
-            protein: parseFloat(form.protein) || 0,
-            carbohydrates: parseFloat(form.carbohydrates) || 0,
-            fats: parseFloat(form.fats) || 0,
-            Food_UOM: foodUOMs.find(uom => uom.id === parseInt(form.unit)) || { unit: 'N/A' }
+            FoodUOM: selectedFood.FoodUOM,
         };
-        props.func(newFood); // Call the parent function to add food
+        const macros = calculateMacros(parseFloat(form.quantity), selectedFood);
+        newFood = {...newFood, ...macros };
+        onAddFood(newFood); // Call the parent function to add food
         // Reset the form
-        setForm({ name: '', unit: '', quantity: '', calories: '', protein: '', carbohydrates: '', fats: '' });
+        setForm({ name: '', unit: '', quantity: '' });
     };
 
     return (
@@ -99,7 +100,7 @@ export default function AddFoodForm({ data }) {
                         style={inputStyle}
                         required>
                         <option value="">Select Food</option>
-                        { data.length > 0 && data.map((item, index) => (
+                        { macrosData.length > 0 && macrosData.map((item, index) => (
                             <option key={index} value={item.id}>{item.food_name}</option>
                         ))}
                     </select>
@@ -119,6 +120,7 @@ export default function AddFoodForm({ data }) {
                     <input name="quantity" value={form.quantity} onChange={handleFormChange} onBlur={validateInput} placeholder="Qty" type="number" required style={inputStyle} />
                 </div>
                 <button type="submit" style={buttonStyle}>Add Food</button>
+                <Calendar onDateUpdate={onDateUpdate} buttonStyle={buttonStyle} />
             </form>
         </>
     );

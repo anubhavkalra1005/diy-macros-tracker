@@ -165,6 +165,61 @@ app.get('/api/macros-chart', async (req, res) => {
   }
 });
 
+// 📥 GET macros tracker for a specific user and date
+app.get('/api/macros-tracker', async (req, res) => {
+  const { userId, date } = req.query;
+  console.log('Fetching macros tracker for user:', userId, 'on date:', date);
+  try {
+    const foodItems = await prisma.macrosTracker.findMany({
+      where: {
+        user_id: parseInt(userId, 10),
+        date: new Date(date)
+      },
+      include: {
+        MacrosChartMaster: {
+          select: {
+            food_name: true,
+            FoodUOM: {
+              select: {
+                unit: true
+              }
+            }
+          }
+        }
+      }
+    });
+    res.json(foodItems);
+  } catch (error) {
+    console.error('Error fetching food items:', error);
+    res.status(500).json({ error: 'Failed to fetch food items' });
+  }
+});
+
+// ➕ POST a new macros tracker entry
+app.post('/api/macros-tracker', async (req, res) => {
+  const macrosTrackerReq = req.body;
+  console.log('Received macros tracker request:', macrosTrackerReq);
+  try {
+    const createdMacrosTracker = await prisma.macrosTracker.create({
+      data: {
+        ...macrosTrackerReq,
+        date: new Date(macrosTrackerReq.date) // Ensure date is a Date object
+      },
+      include: {
+        MacrosChartMaster: {
+          include: {
+            FoodUOM: { select: { unit: true } }
+          }
+        }
+      }
+    });
+    res.json(createdMacrosTracker);
+  } catch (error) {
+    console.error('Error adding macros tracker:', error);
+    res.status(400).json({ error: 'Failed to add macros tracker' });
+  }
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
