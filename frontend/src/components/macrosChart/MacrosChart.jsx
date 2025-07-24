@@ -10,7 +10,7 @@ export default function MacrosChart() {
         const requestBody = { ...newItem };
         delete requestBody.FoodUOM;
 
-        fetch('/api/macros-chart', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-chart`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default function MacrosChart() {
     };
 
     const updateMacros = async (id, updatedItem) => {
-        const res = await fetch(`/api/macros-chart/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-chart/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedItem),
@@ -44,7 +44,7 @@ export default function MacrosChart() {
     };
 
     const deleteMacros = async (id) => {
-        const res = await fetch(`/api/macros-chart/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-chart/${id}`, {
             method: 'DELETE',
         });
         const deletedItem = await res.json();
@@ -52,7 +52,7 @@ export default function MacrosChart() {
     };
 
     useEffect(() => {
-        fetch('/api/macros-chart')
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-chart`)
             .then(response => response.json())
             .then(macrosMasterData => {
                 console.log('Fetched Macros:', macrosMasterData);
