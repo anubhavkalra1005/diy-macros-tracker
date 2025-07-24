@@ -36,7 +36,7 @@ export default function AddMacrosForm({ onAddMacros }) {
     };
 
     useEffect(() => {
-        fetch('/api/uoms')
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/uoms`)
             .then(response => response.json())
             .then(data => {
                 setFoodUOMs(data.map(uom => ({ id: uom.id, unit: uom.unit })));

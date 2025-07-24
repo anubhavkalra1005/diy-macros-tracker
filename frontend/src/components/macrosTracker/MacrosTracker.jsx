@@ -17,7 +17,7 @@ export default function MacrosTracker({ currUser = 0 }) {
     const addFood = (newItem) => {
         var { food_name, FoodUOM, ...requestBody } = newItem;
         requestBody = { ...requestBody, date: selectedDate, user_id: currUser };
-        fetch('/api/macros-tracker', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-tracker`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export default function MacrosTracker({ currUser = 0 }) {
     };
 
     const updateFood = async (actualRow, updatedQuantity) => {
-        const res = await fetch(`/api/macros-tracker/${actualRow.id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-tracker/${actualRow.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...calculateMacros(updatedQuantity, actualRow), quantity: updatedQuantity }),
@@ -49,7 +49,7 @@ export default function MacrosTracker({ currUser = 0 }) {
     };
 
     const deleteFood = async (id) => {
-        const res = await fetch(`/api/macros-tracker/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-tracker/${id}`, {
             method: 'DELETE',
         });
         await res.json();
@@ -73,7 +73,7 @@ export default function MacrosTracker({ currUser = 0 }) {
     };
 
     useEffect(() => {
-        fetch('/api/macros-chart')
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-chart`)
             .then(response => response.json())
             .then(macrosMasterData => {
                 setMacrosMasterData(macrosMasterData);
@@ -81,7 +81,7 @@ export default function MacrosTracker({ currUser = 0 }) {
     }, []);
 
     useEffect(() => {
-        fetch(`/api/macros-tracker?userId=${currUser}&date=${selectedDate}`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/macros-tracker?userId=${currUser}&date=${selectedDate}`)
             .then(response => response.json())
             .then(macrosTrackerData => {
                 macrosTrackerData = macrosTrackerData.map(item => flattenMacrosTrackerData(item));
