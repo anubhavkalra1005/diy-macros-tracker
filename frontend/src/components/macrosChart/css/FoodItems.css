@@ -1,0 +1,290 @@
+.macros-table-container {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100vw;
+}
+
+.macros-table-wrapper {
+  width: 100%;
+  /* Fixed table width */
+  min-width: 700px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #a1c4fd22;
+  overflow: hidden;
+  display: block;
+}
+
+.macros-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #a1c4fd22;
+  overflow: hidden;
+  font-size: 1rem;
+  table-layout: fixed;
+}
+
+@media (max-width: 900px) {
+  .macros-table-container {
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .macros-table-wrapper {
+    min-width: unset;
+    width: 100%;
+    /* border-radius: 12px; */
+  }
+
+  .macros-table {
+    min-width: 600px;
+    /* allows horizontal scroll for small screens */
+    font-size: 0.96rem;
+  }
+
+  .macros-table th,
+  .macros-table td {
+    padding: 10px 8px;
+    /* word-wrap: break-word; */
+  }
+
+  .macros-table td[colspan] {
+    font-size: 1rem;
+    padding: 16px;
+  }
+}
+
+/* @media (max-width: 600px) {
+  .macros-table-wrapper {
+    border-radius: 8px;
+  }
+
+  .macros-table {
+    min-width: 500px;
+    font-size: 0.92rem;
+  }
+
+  .macros-table th,
+  .macros-table td {
+    padding: 8px 6px;
+  }
+
+  .macros-table td[colspan] {
+    font-size: 0.95rem;
+    padding: 14px;
+  }
+} */
+
+/* @media (max-width: 600px) {
+  .macros-table {
+    border: none;
+    font-size: 0.94rem;
+  }
+
+  .macros-table thead {
+    display: none;
+  }
+
+  .macros-table tbody,
+  .macros-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .macros-table tr {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px #a1c4fd22;
+    margin-bottom: 16px;
+    padding: 12px;
+  }
+
+  .macros-table td {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    border: none;
+    padding: 6px 0;
+    text-align: left;
+    position: relative;
+  }
+
+  .macros-table td.actions {
+    width: 100%;
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .macros-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    color: #3a86ff;
+    font-size: 0.82rem;
+    margin-bottom: 2px;
+  }
+
+  .macros-table td[colspan] {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.95rem;
+    color: #777;
+  }
+} */
+
+@media (max-width: 600px) {
+  .macros-table-container {
+    background: none !important;
+  }
+
+  .macros-table-wrapper {
+    min-width: unset;
+    width: 100%;
+    background: none !important;
+    /* border-radius: 12px; */
+  }
+
+  .macros-table {
+    border: none;
+    font-size: 0.92rem;
+    table-layout: auto;
+    width: 100%;
+  }
+
+  .macros-table thead {
+    display: none;
+  }
+
+  .macros-table tbody:not(.no-data),
+  .macros-table tr {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* background: #fff; */
+    border-radius: 12px;
+    box-shadow: 5px 6px 8px 2px #24444422;
+    margin-bottom: 16px;
+    padding: 10px;
+    max-width: 95vw;
+  }
+
+  .macros-table td {
+    padding: 8px 6px;
+    box-sizing: border-box;
+    border: none;
+    text-align: left;
+    position: relative;
+    display: block;
+  }
+
+  /* First row: 3 columns (33.33%) */
+  .macros-table td[data-label="Food Name"],
+  .macros-table td[data-label="Unit"],
+  .macros-table td[data-label="Quantity"] {
+    flex: 1 1 33.33%;
+    max-width: 33.33%;
+  }
+
+  /* Second row: 4 columns (25%) */
+  .macros-table td[data-label="Calories"],
+  .macros-table td[data-label="Protein"],
+  .macros-table td[data-label="Carbohydrates"],
+  .macros-table td[data-label="Fats"] {
+    flex: 1 1 25%;
+    max-width: 25%;
+  }
+
+  /* Last row: actions full width */
+  .macros-table td.actions {
+    flex: 1 1 100%;
+    display: flex;
+    gap: 10px;
+    margin-left: -12px;
+    margin-top: 6px;
+  }
+
+  /* Row break (force line wrapping) */
+  .macros-table td[data-label="Quantity"]::after,
+  .macros-table td[data-label="Fats"]::after {
+    content: "";
+    flex-basis: 100%;
+    height: 0;
+  }
+
+  .macros-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    color: #3a86ff;
+    font-size: 0.82rem;
+    margin-bottom: 2px;
+  }
+
+  .macros-table td[colspan] {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.95rem;
+    color: #777;
+  }
+
+  .macros-table td.actions button {
+    /* Hide icon-only buttons, show text buttons */
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #a1c4fd22;
+    margin-right: 0;
+    display: inline-block;
+    min-width: 90px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  /* Edit button style */
+  .macros-table td.actions button:first-child {
+    background: linear-gradient(90deg, #afceff 0%, #9dfbf6 100%) !important;
+    color: #fff;
+  }
+
+  /* Delete button style */
+  .macros-table td.actions button:last-child {
+    background: linear-gradient(90deg, #ff6b6b 0%, #ffd6d6 100%) !important;
+    color: #fff;
+  }
+
+  .macros-table td.actions button:first-child:hover {
+    background: linear-gradient(90deg, #3a86ff 40%, #5ee7df 100%);
+    box-shadow: 0 4px 12px #3a86ff33;
+  }
+
+  .macros-table td.actions button:last-child:hover {
+    background: linear-gradient(90deg, #ff6b6b 40%, #ffd6d6 100%);
+    box-shadow: 0 4px 12px #ff6b6b33;
+  }
+
+  /* Show button text on mobile, hide icons if present via ::after */
+  .macros-table td.actions button::after {
+    content: attr(data-text);
+    display: inline;
+    margin-left: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* If you use icons, hide them on mobile */
+  .macros-table td.actions svg {
+    display: none !important;
+  }
+}

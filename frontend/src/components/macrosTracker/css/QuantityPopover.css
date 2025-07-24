@@ -1,0 +1,70 @@
+.popover-container {
+    position: absolute;
+    top: 65%;
+    left: 0;
+    margin-top: 8px;
+    background: linear-gradient(90deg, #e0e7ff 0%, #a1c4fd 100%);
+    padding: 12px 14px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(58, 134, 255, 0.15);
+    z-index: 100;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border: 1px solid #3a86ff;
+}
+
+.popover-arrow {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #a1c4fd;
+}
+
+.popover-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #3a86ff;
+    font-size: 0.85em;
+}
+
+.popover-input {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #a1c4fd;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+}
+
+.popover-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.popover-button {
+    flex: 1;
+    padding: 5px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85em;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.save-button {
+    background: linear-gradient(90deg, #3a86ff 0%, #a1c4fd 100%);
+    box-shadow: 0 2px 8px #3a86ff33;
+}
+
+.cancel-button {
+    background: linear-gradient(90deg, #ff6b6b 0%, #ffd6d6 100%);
+    box-shadow: 0 2px 8px #ff6b6b33;
+}

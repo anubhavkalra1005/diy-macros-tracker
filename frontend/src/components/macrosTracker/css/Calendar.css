@@ -1,0 +1,133 @@
+.calendar-container {
+    position: relative;
+}
+
+.calendar-popup {
+    position: absolute;
+    top: 90px;
+    right: 0;
+    z-index: 20;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(161, 196, 253, 0.4);
+    padding: 20px;
+    min-width: 300px;
+}
+
+.calendar-header {
+    text-align: center;
+    color: #3a86ff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.calendar-day-label {
+    font-weight: 600;
+    color: #3a86ff;
+    font-size: 0.9rem;
+}
+
+.calendar-date-btn {
+    background: #ffffff;
+    color: #3a3a3a;
+    border: 1.5px solid #a1c4fd88;
+    border-radius: 12px;
+    padding: 0.7em 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    user-select: none;
+}
+
+.calendar-date-btn:hover:not(.future):not(.selected) {
+    background: #f0f8ff;
+}
+
+.calendar-date-btn.future {
+    color: #c0c0c0;
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.calendar-date-btn.selected {
+    background: linear-gradient(135deg, #3a86ff, #a1c4fd);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(58, 134, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Mobile phones (≤480px) */
+@media (max-width: 480px) {
+    .calendar-popup {
+        left: 10% !important;
+        top: 80px !important;
+        transform: translateX(-50%);
+        width: 100%;
+        padding: 16px;
+        min-width: 80vw;
+        border-radius: 14px;
+        box-sizing: border-box;
+    }
+
+    .calendar-header {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+
+    .calendar-day-label {
+        font-size: 0.75rem;
+    }
+
+    .calendar-date-btn {
+        font-size: 0.75rem;
+        padding: 0.5em 0;
+        border-radius: 10px;
+    }
+
+    .calendar-grid {
+        gap: 6px;
+    }
+}
+
+/* Tablets and medium screens (≤768px) */
+@media (max-width: 768px) {
+    .calendar-popup {
+        right: 0 !important;
+        top: 0 !important;
+        left: 51px !important;
+        transform: translateX(-50%);
+        width: 100%;
+        min-width: 70vw;
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .calendar-header {
+        font-size: 1.1rem;
+        margin-bottom: 14px;
+    }
+
+    .calendar-day-label {
+        font-size: 0.85rem;
+    }
+
+    .calendar-date-btn {
+        font-size: 0.85rem;
+        padding: 0.6em 0;
+        border-radius: 12px;
+    }
+
+    .calendar-grid {
+        gap: 7px;
+    }
+}

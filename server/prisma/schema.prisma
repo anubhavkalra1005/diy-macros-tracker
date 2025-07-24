@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+  customMacrosChart MacrosChartMaster[] // User's personalized macros chart
+}
+
+model FoodUOM {
+  id Int @id @default(autoincrement())
+  name String
+  unit String @unique
+
+  MacrosChartMaster MacrosChartMaster[]
+}
+
+model MacrosChartMaster {
+  id Int @id @default(autoincrement())
+  food_name	String
+  uom_id Int
+  quantity Decimal
+  calories Decimal
+  protein Decimal
+  carbohydrates Decimal
+  fats Decimal
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  
+  // Either null (for system chart) or associated with user
+  user_id Int?
+  user User? @relation(fields: [user_id], references: [id])
+
+  FoodUOM FoodUOM @relation(fields: [uom_id], references: [id])
+
+  MacrosTracker MacrosTracker[]
+
+  @@index([user_id])
+}
+
+model MacrosTracker {
+  id Int @id @default(autoincrement())
+  food_macros_id Int // PK of MacrosChartMaster acting as FK
+  quantity Decimal
+  calories Decimal
+  protein Decimal
+  carbohydrates Decimal
+  fats Decimal
+  user_id	Int
+  date DateTime
+
+  // Relation with MacrosChartMaster based on its PK
+  MacrosChartMaster MacrosChartMaster @relation(fields: [food_macros_id], references: id)
+
+}
+
+model Total_Macros {
+  id Int @id @default(autoincrement())
+  user_id Int
+  date DateTime
+  total_calories Decimal
+  total_protein Decimal
+  total_carbohydrates Decimal
+  total_fats Decimal
+}

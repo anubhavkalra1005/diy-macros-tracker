@@ -1,0 +1,136 @@
+.macros-modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0008;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.macros-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px;
+  min-width: 340px;
+  box-shadow: 0 4px 24px #a1c4fd44;
+  position: relative;
+}
+
+.macros-modal h3 {
+  color: #3a86ff;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.macros-modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.macros-modal-input-group {
+  position: relative;
+}
+
+.macros-modal-input {
+  padding: 1.3rem 1rem 0.6rem 1rem;
+  border-radius: 16px;
+  border: 1.5px solid #a1c4fd;
+  outline: none;
+  font-size: 1rem;
+  background: #fff;
+  color: #22223b;
+  box-shadow: 0 1px 4px #a1c4fd11;
+  margin-bottom: 0;
+  transition: border 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.macros-modal-input:focus {
+  border-color: #3a86ff;
+  box-shadow: 0 2px 8px #a1c4fd33;
+}
+
+.macros-modal-label {
+  position: absolute;
+  left: 18px;
+  top: -10px;
+  font-size: 0.85rem;
+  color: #3a86ff;
+  background: #fff;
+  padding: 0 4px;
+  pointer-events: none;
+  transition: all 0.18s;
+  z-index: 2;
+}
+
+.macros-modal-label.inactive {
+  top: -12px;
+  font-size: 1rem;
+  color: #888;
+  padding: 0 8px;
+}
+
+.macros-modal-actions {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.macros-modal-actions .save-btn {
+  background: linear-gradient(90deg, #3a86ff 0%, #a1c4fd 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px #a1c4fd44;
+  transition: background 0.2s;
+}
+
+.macros-modal-actions .save-btn:hover {
+  background: linear-gradient(90deg, #3a86ff 30%, #5ee7df 100%);
+}
+
+.macros-modal-actions .cancel-btn {
+  background: #eee;
+  color: #222;
+  border: none;
+  border-radius: 24px;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1.05rem;
+  transition: background 0.2s;
+}
+
+.macros-modal-actions .cancel-btn:hover {
+  background: #e0e7ff;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .macros-modal {
+    min-width: 90vw;
+    padding: 16px;
+    border-radius: 12px;
+  }
+  .macros-modal-form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .macros-modal-actions .save-btn,
+  .macros-modal-actions .cancel-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+}

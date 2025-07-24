@@ -1,0 +1,28 @@
+/* MacrosChart.css */
+
+.macros-chart-container {
+  max-width: 1100px;
+  margin: 2rem auto 0rem auto;
+  /* padding: 1rem; */
+  box-sizing: border-box;
+}
+
+.macros-chart-title {
+  text-align: center;
+  color: #3a86ff;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .macros-chart-container {
+    padding: 0.5rem;
+    background: none !important;
+  }
+
+  .macros-chart-title {
+    font-size: 1.4rem;
+  }
+}
