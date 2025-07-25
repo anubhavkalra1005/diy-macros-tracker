@@ -1,0 +1,37 @@
+const macrosChart = {
+  "foodItems": [
+    { "food_name": "Oats", "uom_id": 1, "quantity": 50, "calories": 200, "protein": 8.9, "carbohydrates": 32.5, "fats": 3.7 },
+    { "food_name": "Milk", "uom_id": 3, "quantity": 300, "calories": 155, "protein": 9, "carbohydrates": 14.5, "fats": 6.2 },
+    { "food_name": "Peanut Butter", "uom_id": 1, "quantity": 65, "calories": 406.3, "protein": 19.5, "carbohydrates": 11.7, "fats": 31.2 },
+    { "food_name": "Roti", "uom_id": 4, "quantity": 2, "calories": 211, "protein": 6, "carbohydrates": 44.7, "fats": 2 },
+    { "food_name": "Paneer", "uom_id": 1, "quantity": 100, "calories": 312, "protein": 20, "carbohydrates": 4, "fats": 24 },
+    { "food_name": "Atta Bread", "uom_id": 4, "quantity": 2, "calories": 158.1, "protein": 6.4, "carbohydrates": 29.8, "fats": 1.5 },
+    { "food_name": "Soya Chunks", "uom_id": 1, "quantity": 50, "calories": 173.3, "protein": 26.7, "carbohydrates": 16.7, "fats": 2.4 },
+    { "food_name": "Whey Protein", "uom_id": 7, "quantity": 1, "calories": 132.8, "protein": 24.3, "carbohydrates": 3.5, "fats": 2.4 },
+    { "food_name": "Curd", "uom_id": 1, "quantity": 250, "calories": 162.5, "protein": 10, "carbohydrates": 11.5, "fats": 7.8 },
+    { "food_name": "Besan", "uom_id": 1, "quantity": 100, "calories": 386, "protein": 22.8, "carbohydrates": 57.6, "fats": 6.7 },
+    { "food_name": "Tofu", "uom_id": 1, "quantity": 100, "calories": 141.46, "protein": 18, "carbohydrates": 3.72, "fats": 9 },
+    { "food_name": "Oil", "uom_id": 5, "quantity": 1, "calories": 40, "protein": 0, "carbohydrates": 0, "fats": 4.5 },
+    { "food_name": "Rice (Cooked)", "uom_id": 1, "quantity": 100, "calories": 130, "protein": 2.3, "carbohydrates": 28.59, "fats": 1 },
+    { "food_name": "Rajma (Cooked)", "uom_id": 1, "quantity": 250, "calories": 235, "protein": 9.5, "carbohydrates": 43, "fats": 3.4 },
+    { "food_name": "Mixed Sprouts", "uom_id": 1, "quantity": 100, "calories": 101, "protein": 10, "carbohydrates": 21.25, "fats": 0.4 },
+    { "food_name": "Desi Ghee", "uom_id": 1, "quantity": 13, "calories": 112, "protein": 0, "carbohydrates": 0, "fats": 13 },
+    { "food_name": "Almonds", "uom_id": 1, "quantity": 13, "calories": 77, "protein": 2.7, "carbohydrates": 2.7, "fats": 6.8 },
+    { "food_name": "Raisins", "uom_id": 1, "quantity": 21.5, "calories": 64.5, "protein": 0.7, "carbohydrates": 17, "fats": 0.1 },
+    { "food_name": "Walnuts", "uom_id": 1, "quantity": 12, "calories": 78, "protein": 1.9, "carbohydrates": 1.7, "fats": 7.8 },
+    { "food_name": "Mango", "uom_id": 1, "quantity": 100, "calories": 65, "protein": 0.51, "carbohydrates": 17, "fats": 0.2 },
+    { "food_name": "Banana", "uom_id": 1, "quantity": 113, "calories": 120, "protein": 0, "carbohydrates": 26, "fats": 0 },
+    { "food_name": "Pear", "uom_id": 1, "quantity": 89, "calories": 50.5, "protein": 0.3, "carbohydrates": 13.5, "fats": 0.1 },
+    { "food_name": "Tomato", "uom_id": 1, "quantity": 123, "calories": 22, "protein": 1.1, "carbohydrates": 4.8, "fats": 0.3 },
+    { "food_name": "Capsicum", "uom_id": 1, "quantity": 45, "calories": 18, "protein": 0.9, "carbohydrates": 4.3, "fats": 0.2 },
+    { "food_name": "Onion", "uom_id": 1, "quantity": 94, "calories": 41, "protein": 1.3, "carbohydrates": 9.5, "fats": 0.2 }
+  ]
+};
+
+fetch('http://localhost:5000/api/macros-chart/bulk', {
+     method: 'POST',
+     headers: {
+         'Content-Type': 'application/json',
+     },
+    body: JSON.stringify(macrosChart)
+}).then(response => response.json()).then(data => console.log(data));
